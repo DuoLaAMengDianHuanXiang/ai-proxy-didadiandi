@@ -9,6 +9,7 @@ const TARGETS = {
   gemini: {
     baseUrl: "https://generativelanguage.googleapis.com/v1beta",
     extraHeaders: {},
+    apiKey: "AIzaSyCrK00HqOAAewTS9wGGpqLGQwK-K7RNvIo",  // ← 加上这行
   },
   openai: {
     baseUrl: "https://api.openai.com/v1",
