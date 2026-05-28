@@ -11,6 +11,10 @@ const TARGETS = {
     extraHeaders: {},
     apiKey: () => process.env.GEMINI_API_KEY,
   },
+  facebook: {
+    baseUrl: "https://graph.facebook.com",
+    extraHeaders: {},
+ },
   openai: {
     baseUrl: "https://api.openai.com/v1",
     extraHeaders: {},
