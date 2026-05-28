@@ -9,7 +9,7 @@ const TARGETS = {
   gemini: {
     baseUrl: "https://generativelanguage.googleapis.com/v1beta",
     extraHeaders: {},
-    apiKey: () => process.env.GEMINI_API_KEY,  // ← 加上这行
+    apiKey: () => process.env.GEMINI_API_KEY,
   },
   openai: {
     baseUrl: "https://api.openai.com/v1",
@@ -33,7 +33,15 @@ exports.handler = async (event) => {
   const restPath = "/" + parts.slice(proxyIdx + 2).join("/");
   const target = TARGETS[targetName];
   const targetUrl = target.baseUrl + restPath;
-  const qs = event.queryStringParameters ? "?" + new URLSearchParams(event.queryStringParameters).toString() : "";
+  let qs = event.queryStringParameters ? "?" + new URLSearchParams(event.queryStringParameters).toString() : "";
+
+  // 👇 新增：把 apiKey 注入到 URL
+  const targetApiKey = typeof target.apiKey === 'function' ? target.apiKey() : target.apiKey;
+  if (targetApiKey) {
+    const separator = qs ? '&' : '?';
+    qs += separator + 'key=' + encodeURIComponent(targetApiKey);
+  }
+  // 👆
 
   const headers = {};
   ["authorization","content-type","accept","x-api-key"].forEach(k => { if (event.headers[k]) headers[k] = event.headers[k]; });
